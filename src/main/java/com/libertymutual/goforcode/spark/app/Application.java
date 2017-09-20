@@ -33,11 +33,19 @@ public class Application {
 		try (AutoCloseableDB db = new AutoCloseableDB()) {
 			// opens a connection to the database
 			User.deleteAll();
-			new User("email@email.net", encryptedPassword, "John", "Doe").saveIt();
+			
+			User testUser = new User("email@email.net", encryptedPassword, "John", "Doe");
+			testUser.saveIt();
+			
 
 			Apartment.deleteAll();
-			new Apartment(4000, 1, 1, 350, "123 Main St.", "San Francisco", "CA", "95125").saveIt();
-			new Apartment(4000, 5, 6, 4000, "123 Cowboy Way", "Houston", "TX", "77006").saveIt();
+			Apartment a = new Apartment(4000, 1, 1, 350, "123 Main St.", "San Francisco", "CA", "95125");
+			a.saveIt();
+			testUser.add(a);
+			Apartment b = new Apartment(4000, 5, 6, 4000, "123 Cowboy Way", "Houston", "TX", "77006");
+			b.saveIt();
+			testUser.add(b);
+			
 		}
 		// closes the connection to the database
 		// get("/", HomeController.index);
@@ -58,7 +66,10 @@ public class Application {
 		path("/apartments", () -> {
 			before("/new", SecurityFilters.isAuthenticated);
 			get("/new", ApartmentController.newForm);
+			before("/mine", SecurityFilters.isAuthenticated);
+			get("/mine", ApartmentController.index);
 			get("/:id", ApartmentController.details);
+				// goes after specific mappings
 			before("", SecurityFilters.isAuthenticated);
 			post("", ApartmentController.create);
 		});

@@ -1,9 +1,13 @@
 package controllers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.javalite.activejdbc.LazyList;
+
 import models.Apartment;
+import models.User;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -30,6 +34,7 @@ public class ApartmentController {
 	};
 
 	public static final Route create = (Request req, Response res) -> {
+		try (AutoCloseableDB db = new AutoCloseableDB()) {
 		Apartment apartment = new Apartment(
 				Integer.parseInt(req.queryParams("rent")),
 				Integer.parseInt(req.queryParams("number_of_br")),
@@ -40,10 +45,28 @@ public class ApartmentController {
 				req.queryParams("state"),
 				req.queryParams("zip_code")
 				);
-		try (AutoCloseableDB db = new AutoCloseableDB()) {
+		
+			User user = req.session().attribute("currentUser");
+			user.add(apartment);
 			apartment.saveIt();
 			res.redirect("/");
 			return "";
 		}
 	};
+
+	public final static Route index = (Request req, Response res) -> {
+		User currentUser = req.session().attribute("currentUser");
+		long id = (long) currentUser.getId();
+				
+		try (AutoCloseableDB db = new AutoCloseableDB()) {
+//			List<Apartment> apartments = Apartment.where("user_id = ?", id);
+			List<Apartment> apartments = currentUser.getAll(Apartment.class);
+// multiple filters:  List<Apartment> apartments = currentUser.get(Apartment.class, "state = ?", selectedState)
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("apartments", apartments);
+			return MustacheRenderer.getInstance().render("apartment/index.html", model);
+		}
+	};
+	
+	
 }

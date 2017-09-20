@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Your Apartments</title>
+</head>
+<body>
+
+	
+	<h1>Apartments</h1>
+	{{#apartments}}
+		<div>
+		<a href="/apartments/{{ id }}">{{ address }}</a>
+		</div>
+	{{/apartments}}
+	
+</body>
+</html>

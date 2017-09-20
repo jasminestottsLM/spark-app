@@ -18,10 +18,11 @@ public class UserController {
 	public static final Route create = (Request req, Response res) -> {
 		String encryptedPassword = BCrypt.hashpw(req.queryParams("password"), BCrypt.gensalt());
 		User user = new User(
+				req.queryParams("email"),
+				encryptedPassword,
 				req.queryParams("firstName"),
-				req.queryParams("lastName"), 
-				req.queryParams("email"), 
-				encryptedPassword);
+				req.queryParams("lastName")
+				);
 		try (AutoCloseableDB db = new AutoCloseableDB()) {
 			user.saveIt();
 			req.session().attribute("currentUser", user);

@@ -9,5 +9,6 @@ CREATE TABLE apartments (
   address VARCHAR(255) NOT NULL,
   city VARCHAR(255) NOT NULL,
   state VARCHAR(255) NOT NULL,
-  zip_code VARCHAR(30) NOT NULL
+  zip_code VARCHAR(30) NOT NULL,
+  user_id BIGINT
 );

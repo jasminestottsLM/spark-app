@@ -20,6 +20,8 @@
 #if ( $currentUser )
 	Logged in as $currentUser.getEmail()
 	<br>
+	<a href="/apartments/mine">My Listings</a>
+	<br>
 	My Account
 	<br>
 	<a href="/logout">Logout</a>
