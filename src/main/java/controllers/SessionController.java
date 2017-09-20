@@ -31,7 +31,9 @@ public class SessionController {
 			if (user != null && BCrypt.checkpw(password, user.getPassword())) {
 				req.session().attribute("currentUser", user);
 			} else if (user != null) {
-				req.session().attribute("message", "message");
+				req.session().attribute("message", "Incorrect Password");
+			} else {
+				req.session().attribute("message", "Username not found");
 			}
 		}
 

@@ -14,7 +14,7 @@
 #end
 
 #if ( $message )
-	Incorrect password
+	$message
 #end
 	
 #if ( $currentUser )
