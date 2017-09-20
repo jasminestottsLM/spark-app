@@ -8,12 +8,13 @@
 
 <form method="post" action=""> 
 	Email:
-	<input type="email" name="email" placeholder="YourEmail@email.com" required autofocus></input>
+	<input type="email" name="email" placeholder="YourEmail@email.com" required autofocus>
 	<br>
 	Password:
-	<input type="text" placeholder="Password" name="password" required></input>
+	<input type="password" placeholder="Password" name="password" required>
 	<br>
 	<button>Login</button>
+	<input type="hidden" name="returnPath" value="{{ returnPath }}">
 </form>
 
 </body>
