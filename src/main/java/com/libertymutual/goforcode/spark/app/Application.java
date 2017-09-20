@@ -59,9 +59,9 @@ public class Application {
 		// });
 		get("/login", SessionController.newForm);
 		post("/login", SessionController.create);
-		get("/signup", UserController.newForm);
-		post("/signup", UserController.create);
-		get("/logout", SessionController.destroy);
+		get("/users/new", UserController.newForm);
+		post("/users/new", UserController.create);
+		post("/logout", SessionController.destroy);
 
 		path("/apartments", () -> {
 			before("/new", SecurityFilters.isAuthenticated);

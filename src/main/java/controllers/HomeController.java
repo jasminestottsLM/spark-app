@@ -14,6 +14,7 @@ import spark.Response;
 import spark.Route;
 import spark.template.velocity.VelocityTemplateEngine;
 import utilities.AutoCloseableDB;
+import utilities.MustacheRenderer;
 
 public class HomeController {
 
@@ -27,9 +28,9 @@ public class HomeController {
 			model.put("currentUser", req.session().attribute("currentUser"));
 			model.put("noUser", req.session().attribute("currentUser") == null);
 			model.put("message", req.session().attribute("message"));
-			// return MustacheRenderer.getInstance().render("home/index.html", model);
-			// // try this last line with a different index template
-			return new VelocityTemplateEngine().render(new ModelAndView(model, "/templates/home/index2.vm"));
+			 return MustacheRenderer.getInstance().render("home/index.html", model);
+			// not using this because the navigation would be a headache
+//			return new VelocityTemplateEngine().render(new ModelAndView(model, "/templates/home/index2.vm"));
 		}
 	};
 

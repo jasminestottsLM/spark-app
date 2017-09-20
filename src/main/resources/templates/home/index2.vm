@@ -29,7 +29,7 @@
 	<br>
 #end
 
-<h1>Apartments</h1>
+<h1>Apartments!</h1>
 <a href="/apartments/new">Create a new listing</a>
 #if ( $apartments )
 <div>

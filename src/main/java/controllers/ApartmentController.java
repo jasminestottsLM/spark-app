@@ -24,13 +24,18 @@ public class ApartmentController {
 			Apartment apartment = Apartment.findById(id);
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("apartment", apartment);
+			model.put("currentUser", req.session().attribute("currentUser"));
+			model.put("noUser", req.session().attribute("currentUser") == null);
 			MustacheRenderer.getInstance();
 			return MustacheRenderer.getInstance().render("apartment/details.html", model);
 		}
 	};
 	
 	public static final Route newForm = (Request req, Response res) -> {
-		return MustacheRenderer.getInstance().render("apartment/newForm.html", null);
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("currentUser", req.session().attribute("currentUser"));
+		model.put("noUser", req.session().attribute("currentUser") == null);
+		return MustacheRenderer.getInstance().render("apartment/newForm.html", model);
 	};
 
 	public static final Route create = (Request req, Response res) -> {
@@ -64,6 +69,8 @@ public class ApartmentController {
 // multiple filters:  List<Apartment> apartments = currentUser.get(Apartment.class, "state = ?", selectedState)
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("apartments", apartments);
+			model.put("currentUser", req.session().attribute("currentUser"));
+			model.put("noUser", req.session().attribute("currentUser") == null);
 			return MustacheRenderer.getInstance().render("apartment/index.html", model);
 		}
 	};
