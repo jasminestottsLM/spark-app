@@ -17,7 +17,9 @@ public class SessionController {
 	public static final Route newForm = (Request req, Response res) -> {
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("returnPath", req.queryParams("returnPath"));
-		System.out.println(req.queryParams("returnPath"));
+		model.put("currentUser", req.session().attribute("currentUser"));
+		model.put("noUser", req.session().attribute("currentUser") == null);
+		
 		MustacheRenderer.getInstance();
 
 		return MustacheRenderer.getInstance().render("session/newForm.html", model);
@@ -29,6 +31,7 @@ public class SessionController {
 
 		try (AutoCloseableDB db = new AutoCloseableDB()) {
 			User user = User.findFirst("email = ?", email);
+			
 			if (user != null && BCrypt.checkpw(password, user.getPassword())) {
 				req.session().attribute("currentUser", user);
 			} else if (user != null) {

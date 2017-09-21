@@ -36,16 +36,23 @@ public class Application {
 			
 			User testUser = new User("email@email.net", encryptedPassword, "John", "Doe");
 			testUser.saveIt();
+			Object testId = testUser.getId();
+
 			User testUser2 = new User("second@email.net", encryptedPassword, "Jane", "Doe");
 			testUser2.saveIt();
 
+
 			Apartment.deleteAll();
 			Apartment a = new Apartment(4000, 1, 1, 350, "123 Main St.", "San Francisco", "CA", "95125");
-			a.saveIt();
+			a.set("is_active", true);
 			testUser.add(a);
+			a.saveIt();
+			
 			Apartment b = new Apartment(4000, 5, 6, 4000, "123 Cowboy Way", "Houston", "TX", "77006");
-			b.saveIt();
+			b.set("is_active", false);
 			testUser.add(b);
+			b.saveIt();
+			
 			
 		}
 		// closes the connection to the database

@@ -20,8 +20,19 @@
 	<dt>Number of Likes</dt>
 	<dd>{{ likedBy.size }}</dd>
 	
+	{{#currentIsCreated}}
+	<dt>Status</dt>
+	<dd>
+	<form method="post" action="/apartments/{{ id }}/deactivations">
+	<button>Deactivate listing</button>
+	</form>
+	<form method="post" action="/apartments/{{ id }}/activations">
+	<button>Activate listing</button>
+	</form>
+	</dd>
 	<dt>Who has liked this apartment:</dt>
 	<dd>{{#likedBy}} {{ firstName }} {{ lastName}} {{/likedBy}}</dd>
+	 {{/currentIsCreated}}
 	 
 	{{#noUser}}
 		<a href="/login?returnPath=/apartments/{{ id }}">Login to LIKE this apartment</a>

@@ -27,7 +27,7 @@ public class UserApiController {
 				return apartment.toJson(true);
 			}
 			notFound("Could not find that user.");
-			return "";
+			return "/";
 		}
 
 	};
