@@ -42,4 +42,6 @@ public class ApartmentApiController {
 			return apartment.toJson(true);
 		}
 	};
+	
+	
 }

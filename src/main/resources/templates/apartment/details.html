@@ -7,6 +7,9 @@
 <body>
 {{> ../common/_navigation }}
 <br>
+
+<br>
+
 <h1>Rent: ${{ apartment.rent }}</h1>
 <p>
 	{{ apartment.address }}<br>
@@ -14,6 +17,27 @@
 </p>
 
 <dl>
+	<dt>Number of Likes</dt>
+	<dd>{{ likedBy.size }}</dd>
+	
+	<dt>Who has liked this apartment:</dt>
+	<dd>{{#likedBy}} {{ firstName }} {{ lastName}} {{/likedBy}}</dd>
+	 
+	{{#noUser}}
+		<a href="/login?returnPath=/apartments/{{ id }}">Login to LIKE this apartment</a>
+	{{/noUser}}
+	
+	<form method="post" action="/apartments/{{ id }}/likes">
+	{{^likedBy}}
+	{{#currentUser}}
+		{{^currentIsCreated}}	
+		<button>Like this apartment</button>
+		{{/currentIsCreated}}
+	{{/currentUser}}
+	{{/likedBy}}
+	</form>
+	
+	</dd>
 	<dt>Number of bedrooms</dt>
 	<dd>{{ apartment.numberOfBR }}</dd>
 	<dt>Number of bathrooms</dt>

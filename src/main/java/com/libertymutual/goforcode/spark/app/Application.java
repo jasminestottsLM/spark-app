@@ -36,7 +36,8 @@ public class Application {
 			
 			User testUser = new User("email@email.net", encryptedPassword, "John", "Doe");
 			testUser.saveIt();
-			
+			User testUser2 = new User("second@email.net", encryptedPassword, "Jane", "Doe");
+			testUser2.saveIt();
 
 			Apartment.deleteAll();
 			Apartment a = new Apartment(4000, 1, 1, 350, "123 Main St.", "San Francisco", "CA", "95125");
@@ -66,10 +67,25 @@ public class Application {
 		path("/apartments", () -> {
 			before("/new", SecurityFilters.isAuthenticated);
 			get("/new", ApartmentController.newForm);
+			
 			before("/mine", SecurityFilters.isAuthenticated);
 			get("/mine", ApartmentController.index);
+			
+			
 			get("/:id", ApartmentController.details);
 				// goes after specific mappings
+			
+			before("/:id/likes", SecurityFilters.isAuthenticated);
+			post("/:id/likes", ApartmentController.likes);
+			
+			before("/:id/activations", SecurityFilters.isAuthenticated);
+			//also need user to == listing user
+			post("/:id/activations", ApartmentController.activations);
+			
+			before("/:id/deactivations", SecurityFilters.isAuthenticated);
+			//also need user to == listing user
+			post("/:id/deactivations", ApartmentController.deactivations);
+			
 			before("", SecurityFilters.isAuthenticated);
 			post("", ApartmentController.create);
 		});

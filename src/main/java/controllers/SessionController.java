@@ -17,6 +17,7 @@ public class SessionController {
 	public static final Route newForm = (Request req, Response res) -> {
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("returnPath", req.queryParams("returnPath"));
+		System.out.println(req.queryParams("returnPath"));
 		MustacheRenderer.getInstance();
 
 		return MustacheRenderer.getInstance().render("session/newForm.html", model);

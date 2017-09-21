@@ -1,11 +1,17 @@
 
 {{#noUser}}
+
 <a href="/login">Login</a>
 <a href="/users/new">Sign up</a>
+
+<br>
+{{#message}}
+	{{ message }} 
+{{/message}}
 {{/noUser}}
 
 {{#currentUser}}
-	Logged in as {{ currentUser.email }}
+	Logged in as {{ currentUser.firstName }} {{ currentUser.lastName }}
 	<br>
 	<a href="/apartments/mine">Your listings</a>
 	<br>
