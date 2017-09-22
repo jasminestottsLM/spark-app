@@ -12,7 +12,9 @@ public class SecurityFilters {
 			if (req.pathInfo().equals("/apartments/mine")) {
 				res.redirect("/login");
 				halt();
-			} 
+			}
+			res.redirect("/login?returnPath=" + req.pathInfo());
+			halt();
 		}
 	};
 }
