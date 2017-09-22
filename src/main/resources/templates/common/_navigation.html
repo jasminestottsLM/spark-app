@@ -19,6 +19,7 @@
 	<a href="/apartments/new">Add a listing</a>
 	<form method="post" action="/logout">
 		<button>Logout</button>
-		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}">
+		<input type="hidden" name="thisCSRF" value = "{{ thisCSRF }}">
+<!-- 		<input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}"> -->
 	</form>
 {{/currentUser}}
