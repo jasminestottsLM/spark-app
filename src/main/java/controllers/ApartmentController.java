@@ -27,6 +27,7 @@ public class ApartmentController {
 		Apartment apartment = Apartment.findById(id);
 		List<User> likedBy = apartment.getAll(User.class);
 		Object createdBy = apartment.get("user_id");
+		Object isActive = apartment.get("is_active");
 
 		User currentUser = req.session().attribute("currentUser");
 		if (currentUser != null) {
@@ -50,6 +51,7 @@ public class ApartmentController {
 		model.put("createdBy", createdBy);
 		model.put("likedBy", likedBy);
 		model.put("currentIsCreated", currentIsCreated);
+		model.put("isActive", isActive);
 
 		MustacheRenderer.getInstance();
 		return MustacheRenderer.getInstance().render("apartment/details.html", model);
@@ -125,6 +127,17 @@ public class ApartmentController {
 		}
 	};
 
-	public static Route deactivations;
+	public static Route deactivations = (Request req, Response res) -> {
+		try(AutoCloseableDB db=new AutoCloseableDB()){
+		String idAsString=req.params("id");
+		Map<String,Object> model=new HashMap<String,Object>();
+		int id = Integer.parseInt(idAsString);
+		Apartment apartment = Apartment.findById(id);
+		apartment.set("is_active", false);
+		apartment.saveIt();
+		res.redirect("/apartments/"+id);
+		return"";
+		}
+	};
 
 }

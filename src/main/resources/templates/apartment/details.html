@@ -23,12 +23,19 @@
 	{{#currentIsCreated}}
 	<dt>Status</dt>
 	<dd>
+	
+	{{#isActive}}
 	<form method="post" action="/apartments/{{ id }}/deactivations">
 	<button>Deactivate listing</button>
 	</form>
+	{{/isActive}}
+	
+	{{^isActive}}
 	<form method="post" action="/apartments/{{ id }}/activations">
 	<button>Activate listing</button>
 	</form>
+	{{/isActive}}
+	
 	</dd>
 	<dt>Who has liked this apartment:</dt>
 	<dd>{{#likedBy}} {{ firstName }} {{ lastName}} {{/likedBy}}</dd>
