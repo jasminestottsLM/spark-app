@@ -39,11 +39,6 @@ public class ApartmentController {
 		
 		
 		Map<String, Object> model = new HashMap<String, Object>();
-
-		// if( == createdBy) {
-		// currentIsCreated = true;
-		// }
-		//
 		model.put("apartment", apartment);
 		model.put("currentUser", req.session().attribute("currentUser"));
 		model.put("noUser", req.session().attribute("currentUser") == null);
