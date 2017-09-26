@@ -39,12 +39,14 @@ public class SessionController {
 
 		try (AutoCloseableDB db = new AutoCloseableDB()) {
 			User user = User.findFirst("email = ?", email);
-			String testCSRF = req.queryParams("thisCSRF"); 
-			System.out.println("testCSRF = " + testCSRF);
-			String receivedCSRF = req.cookie("thisCSRF");
-			System.out.println("newCSRF = " + receivedCSRF);
+//			String testCSRF = req.queryParams("thisCSRF"); 
+//			System.out.println("testCSRF = " + testCSRF);
+//			String receivedCSRF = req.cookie("thisCSRF");
+//			System.out.println("newCSRF = " + receivedCSRF);
 			
-			if (user != null && BCrypt.checkpw(password, user.getPassword()) && testCSRF.equals(receivedCSRF)) {
+			if (user != null && BCrypt.checkpw(password, user.getPassword()) 
+					// && testCSRF.equals(receivedCSRF)
+					) {
 				req.session().attribute("currentUser", user);
 			} else if (user != null) {
 				req.session().attribute("message", "Incorrect Password");
