@@ -60,7 +60,7 @@ public class Application {
 			c.saveIt();	
 		}
 		
-		enableCORS("*", "*", "*");
+		enableCORS("http://localhost:4200", "*", "*");
 		
 		// closes the connection to the database
 		// get("/", HomeController.index);
@@ -107,12 +107,12 @@ public class Application {
 		});
 		
 		path("/api", () -> {
+			post("/sessions", SessionApiController.login);
 			get("/apartments/:id", ApartmentApiController.details);
 			post("/apartments", ApartmentApiController.create);
 			get("/apartments", ApartmentApiController.index);
 			get("/users/:id", UserApiController.details);
 			post("/users", UserApiController.create);
-			post("/sessions", SessionApiController.login);
 		});
 	}
 	
@@ -137,8 +137,9 @@ public class Application {
 	        response.header("Access-Control-Allow-Origin", origin);
 	        response.header("Access-Control-Request-Method", methods);
 	        response.header("Access-Control-Allow-Headers", headers);
+	        response.header("Access-Control-Allow-Credentials", "true");
 	        // Note: this may or may not be necessary in your particular application
-	        response.type("application/json");
+//	        response.type("application/json");
 	    });
 	}
 }

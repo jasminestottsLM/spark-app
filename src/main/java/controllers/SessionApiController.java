@@ -1,5 +1,8 @@
 package controllers;
 
+import java.util.Map;
+
+import org.javalite.common.JsonHelper;
 import org.mindrot.jbcrypt.BCrypt;
 
 import models.User;
@@ -11,20 +14,34 @@ import utilities.AutoCloseableDB;
 public class SessionApiController {
 	
 	public static final Route login = (Request req, Response res) -> {
-		String email = req.queryParams("email");
-		String password = req.queryParams("password");
+		String json = req.body();
+		Map map = JsonHelper.toMap(json);
+		User user = new User();
+		user.fromMap(map);
+		String email = user.getEmail();
+		System.out.println(email);
+		String password = user.getPassword();
 		
-		try(AutoCloseableDB db = new AutoCloseableDB()) {
-			User user = User.findFirst("email = ?", email);
-			if (user != null && BCrypt.checkpw(password, user.getPassword())) {
-				req.session().attribute("currentUser", user);
-			} else if (user != null) {
+		
+		try (AutoCloseableDB db = new AutoCloseableDB()) {
+			User currentUser = User.findFirst("email = ?", email);
+			
+			if (currentUser != null && BCrypt.checkpw(password, currentUser.getPassword()) 
+					// && testCSRF.equals(receivedCSRF)
+					) {
+				req.session().attribute("currentUser", currentUser);
+				System.out.println(currentUser);
+				return currentUser.toJson(true);
+			} else if (currentUser != null) {
 				req.session().attribute("message", "Incorrect Password");
+				return null;
 			} else {
 				req.session().attribute("message", "Username not found");
+				return null;
 			}
-			res.header("Content-Type", "application/json");
-			return user.toJson(true);
 		}
+		
+		
+		
 	};
 }
