@@ -23,6 +23,7 @@ import spark.Response;
 import spark.template.velocity.VelocityTemplateEngine;
 import utilities.AutoCloseableDB;
 import controllers.HomeController;
+import controllers.SessionApiController;
 
 public class Application {
 
@@ -51,10 +52,16 @@ public class Application {
 			Apartment b = new Apartment(4000, 5, 6, 4000, "123 Cowboy Way", "Houston", "TX", "77006");
 			b.set("is_active", false);
 			testUser.add(b);
-			b.saveIt();
+			b.saveIt();			
 			
-			
+			Apartment c = new Apartment(2000, 2, 2, 1000, "456 Main St.", "Random", "CO", "11111");
+			c.set("is_active", true);
+			testUser.add(c);
+			c.saveIt();	
 		}
+		
+		enableCORS("*", "*", "*");
+		
 		// closes the connection to the database
 		// get("/", HomeController.index);
 		
@@ -102,8 +109,36 @@ public class Application {
 		path("/api", () -> {
 			get("/apartments/:id", ApartmentApiController.details);
 			post("/apartments", ApartmentApiController.create);
+			get("/apartments", ApartmentApiController.index);
 			get("/users/:id", UserApiController.details);
 			post("/users", UserApiController.create);
+			post("/sessions", SessionApiController.login);
 		});
+	}
+	
+	private static void enableCORS(final String origin, final String methods, final String headers) {
+
+	    options("/*", (request, response) -> {
+
+	        String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
+	        if (accessControlRequestHeaders != null) {
+	            response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+	        }
+
+	        String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
+	        if (accessControlRequestMethod != null) {
+	            response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+	        }
+
+	        return "OK";
+	    });
+
+	    before((request, response) -> {
+	        response.header("Access-Control-Allow-Origin", origin);
+	        response.header("Access-Control-Request-Method", methods);
+	        response.header("Access-Control-Allow-Headers", headers);
+	        // Note: this may or may not be necessary in your particular application
+	        response.type("application/json");
+	    });
 	}
 }
